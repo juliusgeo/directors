@@ -1,0 +1,20 @@
+{
+  "description": "Adds context to all names of directors or writers",
+  "manifest_version": 2,
+  "name": "Director Context",
+  "version": "1.0",
+
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["jquery-3.3.1.js","search.js"],
+      "css":["style.css"],
+      "run_at":"document_start"
+    }
+  ],
+  "permissions":[
+    "*://api.themoviedb.org/*",
+    "activeTab",
+    "webRequest"
+  ]
+}
