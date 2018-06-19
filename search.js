@@ -33,12 +33,19 @@ $(document).ready(function() {
     console.log("connected to port");
     $("<ul class=\"tools\">Nothing found! Unfortunately</ul>").appendTo("body");
     myPort.onMessage.addListener(function(m) {
-            $('ul.tools').html(m.response);
-            console.log(m.response);
-            $('ul.tools').css({
-                'left': pageX + 5,
-                'top' : pageY - 55
-            }).fadeIn(200);
+            if(m.response == "Sorry, nothing found!"){
+                $('ul.tools').html("");
+                $('ul.tools').fadeOut(0);
+            }
+            else{
+                console.log(m.response);
+                $('ul.tools').html(m.response);
+                $('ul.tools').css({
+                    'left': pageX + 5,
+                    'top' : pageY - 55
+                }).fadeIn(200);
+            }
+
     });
     function send_selectedtext(selt){
         myPort.postMessage({selectedText: selt});
