@@ -16,5 +16,8 @@
     "*://api.themoviedb.org/*",
     "activeTab",
     "webRequest"
-  ]
+  ],
+  "background": {
+    "scripts": ["background.js"]
+  }
 }

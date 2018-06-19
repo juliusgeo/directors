@@ -28,34 +28,31 @@ var pageX;
 var pageY;
 
 $(document).ready(function() {
+    console.log("attemping to connect to port");
     var myPort = browser.runtime.connect({name:"port-from-cs"});
+    console.log("connected to port");
     $("<ul class=\"tools\">Nothing found! Unfortunately</ul>").appendTo("body");
-    console.log($('body').html());
-    $(document).bind("mouseup", function() {
-        var selectedText = x.Selector.getSelected();
-        function handleResponse(message) {
-            console.log(response);
-            $('ul.tools').html(message.response[0]+message.response[1]+message.response[2]);
-        }
-        function handleError(error) {
-          console.log(`${error}`);
-        }
-        function notifyBackgroundPage(e) {
-          browser.runtime.sendMessage({selectedText: selectedText.toString()}).then(handleResponse, handleError);
-        }
-        window.addEventListener("mouseup", notifyBackgroundPage);
-        if(selectedText != ''){
+    myPort.onMessage.addListener(function(m) {
+            $('ul.tools').html(m.response);
+            console.log(m.response);
             $('ul.tools').css({
                 'left': pageX + 5,
                 'top' : pageY - 55
             }).fadeIn(200);
-        } else {
-            $('ul.tools').fadeOut(200);
-        }
+    });
+    function send_selectedtext(selt){
+        myPort.postMessage({selectedText: selt});
+    }
+    $(document).bind("mouseup", function() {
+        send_selectedtext(x.Selector.getSelected().toString());
+
     });
     $(document).on("mousedown", function(e){
         pageX = e.pageX;
         pageY = e.pageY;
+        if(x.Selector.getSelected().toString() == ''){
+            $('ul.tools').fadeOut(200);
+        }
         console.log(pageX, pageY);
     });
 });
