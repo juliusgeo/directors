@@ -1,5 +1,13 @@
 var portFromCS;
 
+function retrieve_title(obj){
+    if(obj.title == undefined){
+        return obj.original_name;
+    }
+    else{
+        return obj.title;
+    }
+}
 function connected(p) {
   portFromCS = p;
   console.log("connected to background script");
@@ -14,17 +22,18 @@ function connected(p) {
             console.log("nothing found for that query");
         }
         else{
-            movie1=data.results[0].known_for[0].title;
-            movie2=data.results[0].known_for[1].title;
-            movie3=data.results[0].known_for[2].title;
-            responsestring = movie1+", "+movie2+", "+movie3;
+            titles = data.results[0].known_for.map(x=> retrieve_title(x));
+            responsestring = titles.join(', ');
         }
         console.log(responsestring);
         portFromCS.postMessage({response: responsestring});
     });
+
+
   });
 }
 browser.runtime.onConnect.addListener(connected);
+
 
 
 browser.browserAction.onClicked.addListener(function (tab) {
