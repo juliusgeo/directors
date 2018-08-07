@@ -29,9 +29,7 @@ var pageY;
 var myPort;
 $(document).ready(function() {
     //connect to background.js
-    console.log("attemping to connect to port");
     myPort = browser.runtime.connect({name:"port-from-cs"});
-    console.log("connected to port");
 
     //initalize popup
     $("<ul class=\"directorspopup\">Sorry, nothing found!</ul>").appendTo("body");
@@ -45,7 +43,6 @@ $(document).ready(function() {
             }
             //update directorspopup with response, and fade in the directorspopup
             else{
-                console.log(m.response);
                 $('ul.directorspopup').html(m.response);
                 $('ul.directorspopup').css({
                     'left': pageX + 5,
@@ -61,9 +58,7 @@ $(document).ready(function() {
         }
         catch{
             //attempts to reconnect to port if connection fails
-            console.log("attemping to connect to port");
             myPort = browser.runtime.connect({name:"port-from-cs"});
-            console.log("connected to port");
         }
     }
     $(document).bind("mouseup", function() {
